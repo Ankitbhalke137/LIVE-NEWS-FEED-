@@ -291,6 +291,44 @@ a:hover {
   font-size: var(--font-size-sm);
 }
 
+.article-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.article-card__date {
+  white-space: nowrap;
+}
+
+.article-card__author::before {
+  content: 'by ';
+}
+
+.article-card__author {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* --- Empty / Error states ------------------------------------------- */
+.empty-state,
+.error-state {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: var(--space-2xl) var(--space-md);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-base);
+}
+
+.error-state {
+  color: #b91c1c;
+  background: #fef2f2;
+  border-radius: var(--radius);
+}
+
 /* --- Footer ----------------------------------------------------------- */
 .site-footer {
   text-align: center;

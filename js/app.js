@@ -13,11 +13,11 @@
  *  3. Kick off initial load.
  */
 
-import { fetchNews } from './api.js';
+import { fetchNews, NewsAPI } from './api.js';
 import {
   renderArticles,
-  showSpinner,
-  hideSpinner,
+  toggleLoadingSpinner,
+  clearArticleGrid,
   showError,
 } from './ui.js';
 
@@ -26,24 +26,22 @@ let currentCategory = 'general';
 let currentQuery   = '';
 
 /* ---- DOM References ------------------------------------------------ */
-const articlesGrid = document.getElementById('articles-grid');
-const spinner      = document.getElementById('spinner');
 const searchForm   = document.getElementById('search-form');
 const searchInput  = document.getElementById('search-input');
 const catBtns      = document.querySelectorAll('.cat-btn');
 
 /* ---- Core fetch + render pipeline --------------------------------- */
 async function loadNews() {
-  showSpinner(spinner);
-  articlesGrid.innerHTML = '';
+  clearArticleGrid();
+  toggleLoadingSpinner(true);
 
   try {
     const articles = await fetchNews(currentQuery, currentCategory);
-    renderArticles(articlesGrid, articles);
+    renderArticles(articles);
   } catch (err) {
-    showError(articlesGrid, err.message);
+    showError(err.message);
   } finally {
-    hideSpinner(spinner);
+    toggleLoadingSpinner(false);
   }
 }
 
@@ -56,7 +54,7 @@ catBtns.forEach((btn) => {
     btn.classList.add('active');
 
     currentCategory = btn.dataset.category;
-    currentQuery    = '';         // clear search on category switch
+    currentQuery    = '';
     searchInput.value = '';
 
     loadNews();
@@ -70,8 +68,6 @@ searchForm.addEventListener('submit', (e) => {
   if (!value) return;
 
   currentQuery = value;
-
-  /* Deactivate category highlight — search is active */
   catBtns.forEach((b) => b.classList.remove('active'));
 
   loadNews();
