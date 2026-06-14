@@ -13,7 +13,7 @@
  *  3. Kick off initial load.
  */
 
-import { fetchTopHeadlines } from './api.js';
+import { fetchNews } from './api.js';
 import {
   renderArticles,
   showSpinner,
@@ -38,7 +38,7 @@ async function loadNews() {
   articlesGrid.innerHTML = '';
 
   try {
-    const articles = await fetchTopHeadlines(currentCategory, currentQuery);
+    const articles = await fetchNews(currentQuery, currentCategory);
     renderArticles(articlesGrid, articles);
   } catch (err) {
     showError(articlesGrid, err.message);
