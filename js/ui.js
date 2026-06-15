@@ -3,15 +3,15 @@
  *
  * ARCHITECTURAL ROLE
  *   Pure view layer. Reads data (articles), renders markup, manages the
- *   loading spinner, and exposes an error display helper. Never makes fetch
- *   calls, never holds application state. All side-effects are confined to
- *   DOM queries and manipulation.
+ *   loading spinner, and exposes helpers for error and empty-state display.
+ *   Never makes fetch calls, never holds application state. All side-effects
+ *   are confined to DOM queries and manipulation.
  *
  * EXPORTS
  *   renderArticles(articles)
+ *   renderErrorMessage(messageText)
  *   toggleLoadingSpinner(isLoading)
  *   clearArticleGrid()
- *   showError(message)
  */
 
 /* ------------------------------------------------------------------ */
@@ -68,8 +68,12 @@ export function renderArticles(articles) {
   grid.innerHTML = '';
 
   if (!articles || articles.length === 0) {
-    grid.innerHTML =
-      '<p class="empty-state">No articles found. Try a different category or search term.</p>';
+    grid.innerHTML = `
+      <div class="empty-card">
+        <span class="empty-card__icon">📭</span>
+        <p class="empty-card__text">No articles found matching that search term.</p>
+        <p class="empty-card__hint">Try a different keyword or browse a category above.</p>
+      </div>`;
     return;
   }
 
@@ -148,12 +152,22 @@ export function clearArticleGrid() {
 }
 
 /**
- * Display a user-friendly error message inside the articles grid.
- * @param {string} message — Error description to show.
+ * Clear the grid and display a prominent alert box with the error detail.
+ * The message is intentionally vague to the public but descriptive enough
+ * for debugging — no raw stack traces reach the user.
+ *
+ * @param {string} messageText — Human-readable error description.
  */
-export function showError(message) {
+export function renderErrorMessage(messageText) {
   const grid = getGrid();
   if (!grid) return;
-  grid.innerHTML =
-    `<p class="error-state" role="alert">${escapeHtml(message)}</p>`;
+
+  grid.innerHTML = `
+    <div class="error-alert" role="alert">
+      <span class="error-alert__icon">⚠️</span>
+      <div class="error-alert__content">
+        <p class="error-alert__title">Something went wrong</p>
+        <p class="error-alert__text">${escapeHtml(messageText)}</p>
+      </div>
+    </div>`;
 }

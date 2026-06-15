@@ -16,9 +16,9 @@
 import { fetchNews, NewsAPI } from './api.js';
 import {
   renderArticles,
+  renderErrorMessage,
   toggleLoadingSpinner,
   clearArticleGrid,
-  showError,
 } from './ui.js';
 
 /* ---- State --------------------------------------------------------- */
@@ -39,7 +39,7 @@ async function loadNews() {
     const articles = await fetchNews(currentQuery, currentCategory);
     renderArticles(articles);
   } catch (err) {
-    showError(err.message);
+    renderErrorMessage(err.message);
   } finally {
     toggleLoadingSpinner(false);
   }
