@@ -12,14 +12,7 @@
  *   { title, description, link, image_url, source_name, pubDate, creator }
  */
 
-import { API_KEY } from './config.js';
-
-if (!API_KEY) {
-  console.error(
-    'NewsData.io key is missing. Copy js/config.example.js to js/config.js and set your API key.'
-  );
-}
-
+const API_KEY = 'pub_1d5c730f1af64ad28fa004955561585f';
 const BASE_URL = 'https://newsdata.io/api/1';
 
 const CATEGORY_MAP = {
@@ -65,12 +58,6 @@ function createError(message, status) {
  * @returns {{ articles: object[], nextPage: string|null }}
  */
 export async function fetchNews(query = '', category = '', page = '') {
-  if (!API_KEY) {
-    throw createError(
-      'API key not configured. Copy js/config.example.js to js/config.js and set your NewsData.io key.'
-    );
-  }
-
   const params = new URLSearchParams({ apikey: API_KEY, language: 'en' });
 
   const mappedCategory = mapCategory(category);

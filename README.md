@@ -1,43 +1,39 @@
-# LiveNews Aggregator
+# Chronicle News — Live News Feed
 
-A vanilla JavaScript news feed aggregator powered by [NewsData.io](https://newsdata.io).
+A production-grade, framework-free news aggregator built with vanilla HTML, CSS, and JavaScript (ES6 modules). Powered by [NewsData.io](https://newsdata.io).
 
-## Setup
+## Features
 
-1.  Get a free API key from [newsdata.io](https://newsdata.io/register).
-2.  Copy the config template:
-    ```
-    cp js/config.example.js js/config.js
-    ```
-3.  Open `js/config.js` and paste your API key:
-    ```js
-    export const API_KEY = 'your-newsdata-io-api-key';
-    ```
-4.  Serve the project with any local HTTP server:
-    ```sh
-    npx serve .
-    ```
-    or
-    ```sh
-    python3 -m http.server 8000
-    ```
+- Browse headlines by category (Business, Tech, Science, Health, Sports, Entertainment)
+- Free-text keyword search with debounced input
+- Pagination — "Load more stories" button
+- Bookmark articles (persisted in localStorage)
+- Auto-refresh — polls every 60s, banner on new content
+- Reading time estimate on each card
+- Dark mode toggle (persisted in localStorage)
+- Responsive grid (1 → 2 → 3 columns)
+- Animated card entrance, loading spinner, error/empty states
+- Back-to-top button
 
 ## Project Structure
 
 ```
-├── index.html      – HTML shell
-├── styles.css      – All styles (responsive, 320px → desktop)
+├── index.html      – Semantic HTML shell
+├── styles.css      – BEM-scoped CSS (888 lines, responsive)
 ├── js/
-│   ├── api.js      – Data/network layer (fetch, sanitise)
-│   ├── render.js   – DOM rendering (cards, spinner, errors)
-│   ├── app.js      – Controller/state (events, orchestration)
-│   ├── config.js   – Your API key (git-ignored)
-│   └── config.example.js – API key template
+│   ├── api.js      – Data layer (NewsData.io fetch, sanitise, pagination)
+│   ├── render.js   – DOM layer (cards, bookmarks, spinner, errors, banners)
+│   └── app.js      – Controller (state, events, auto-refresh, scroll)
 ```
 
-## Features
+## Quick Start
 
-- Browse top headlines by category (Business, Tech, Science, …)
-- Free-text keyword search
-- Responsive grid (1→2→3 columns)
-- Loading spinner, empty state, and error alerts
+Serve the project root with any HTTP server:
+
+```sh
+npx serve .
+# or
+python3 -m http.server 8000
+```
+
+Then open `http://localhost:8000` in your browser.
